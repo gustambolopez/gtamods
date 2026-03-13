@@ -1,85 +1,265 @@
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>GTA Mods - Fullscreen</title>
-    <style>
-        /* Force the game to fill the entire screen */
-        html, body {
-            padding: 0;
-            margin: 0;
-            overflow: hidden;
-            height: 100%;
-            width: 100%;
-            background-color: #000;
-        }
-        #unity-container {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        #unity-canvas {
-            width: 100% !important;
-            height: 100% !important;
-            display: block;
-        }
-        #loading-cover {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #111;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-        }
-        #unity-loading-bar { width: 50%; }
-        #unity-progress-bar-empty { width: 100%; height: 20px; background: #333; border-radius: 10px; }
-        #unity-progress-bar-full { height: 100%; background: #0ff; width: 0%; border-radius: 10px; transition: width 0.2s; }
-    </style>
+  <!-- Minimal head for SEO preview (Google Sites gadget ignores many head tags, so keep light) -->
+  <meta charset="utf-8" />
+  <title>GTA Mods – StaticQuasar931 (Unblocked GTA-style Modes)</title>
+  <meta name="description" content="GTA Mods — a GTA-style collection of game modes running in your browser. Free, fullscreen, and school-safe on Chromebook, PC, and mobile." />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Dynamic favicon (default: GTA Mods main) -->
+  <link id="dynamicFavicon" rel="icon" type="image/png" href="https://res.cloudinary.com/dcsrqennd/image/upload/v1758327608/GTA_Mods_StaticQuasar931_vua0h4.png">
 </head>
-<body>
+<body class="light"><module>
+<moduleprefs title="Google.com">
+<content type="html"><!--[CDATA[
 
-    <div id="unity-container">
-        <canvas id="unity-canvas" tabindex="-1"></canvas>
-    </div>
+<!DOCTYPE html>
 
-    <div id="loading-cover">
-        <div id="unity-loading-bar">
-            <div id="unity-progress-bar-empty">
-                <div id="unity-progress-bar-full"></div>
-            </div>
-        </div>
-    </div>
+  <!-- Keep your original meta/setup exactly as-is -->
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
-    <script>
-        const buildUrl = "https://cdn.jsdelivr.net/gh/centerclassroom/mc55@main/Build";
-        const loaderUrl = buildUrl + "/bb0d9ecdb05db3e84da20bd14a4f84dc.loader.js";
-        const config = {
-            dataUrl: buildUrl + "/cffd2fddc93a5e3bb5ff56ac3bb5a297.data.br",
-            frameworkUrl: buildUrl + "/c39bf58f300a834e953a20c745c5e5f2.framework.js",
-            codeUrl: buildUrl + "/d649f30ffe591eef6765ee27d7fc980f.wasm.br",
-            streamingAssetsUrl: "StreamingAssets",
-            companyName: "DefaultCompany",
-            productName: "GtaArcade",
-            productVersion: "0.1"
-        };
+  <!-- Hidden SEO block (safe in body; no layout impact) -->
+  <div style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden">
+    <h1>Play GTA Mods — GTA-style Modes in Browser</h1>
+    <p>GTA Mods is a collection of GTA-like game modes you can play in your browser — free, fullscreen, and optimized for Chromebook and desktop.</p>
+  </div>
 
-        const canvas = document.querySelector("#unity-canvas");
-        const loadingCover = document.querySelector("#loading-cover");
-        const progressBarFull = document.querySelector("#unity-progress-bar-full");
+  <!-- Your original stylesheet -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/centerclassroom/mc55@main/style.css">
 
-        // Merge split files logic
-        async function mergeFileParts(fileUrl, partCount) {
+  <style>
+    /* Keep original behavior */
+    canvas:focus { outline: none; }
+    html, body {
+      padding: 0; margin: 0; overflow: hidden; height: 100%;
+      -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none;
+      -moz-user-select: none; -ms-user-select: none; user-select: none;
+      -webkit-tap-highlight-color: rgba(0,0,0,0);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    /* Static Menu (top-left) */
+    #staticMenu{
+      position: fixed; top: 10px; left: 10px; z-index: 99999;
+      background:#111; color:#0ff; padding:10px 16px; border-radius:10px; font-size:14px;
+      animation: glow 2s infinite alternate;
+      transition: opacity .35s ease, transform .35s ease, visibility .35s ease;
+    }
+    #staticMenu a{ color:#0ff; text-decoration:none; font-weight:bold; }
+    #closeStaticMenu{ margin-left:12px; color:#f55; cursor:pointer; }
+    @keyframes glow{0%{opacity:.7}100%{opacity:1; box-shadow:0 0 10px #0ff}}
+
+    /* Slide menu (bottom-right): Google Form → Discord → Instagram */
+    #staticSlideMenu{
+      position: fixed; bottom:24px; right:24px; z-index: 99999;
+      width:100px; height:100px; display:flex; align-items:center; justify-content:center;
+      opacity:0; transform:translateX(120px) scale(.96); pointer-events:none;
+      will-change: transform, opacity;
+      transition: opacity .35s ease, transform .35s ease, visibility .35s ease;
+    }
+    #staticSlideMenu img{ width:100%; height:100%; object-fit:cover; border-radius:50%; user-select:none; }
+    #staticSlideMenu.discord-active img{ transform: scale(1.2); } /* 20% bigger on Discord */
+    @media (max-width:768px){ #staticSlideMenu{ width:82px; height:82px; bottom:20px; right:20px; } }
+    .slideInRight2s{ animation: slideInRight2s 2s ease forwards; }
+    .slideOutRight2s{ animation: slideOutRight2s 2s ease forwards; }
+    @keyframes slideInRight2s{ from{opacity:0; transform:translateX(120px) scale(.96)} to{opacity:1; transform:translateX(0) scale(1)} }
+    @keyframes slideOutRight2s{ from{opacity:1; transform:translateX(0) scale(1)} to{opacity:0; transform:translateX(120px) scale(.96)} }
+
+    /* Global hide (Y+U+I) for all menus/buttons */
+    .menus-hidden #staticMenu,
+    .menus-hidden #staticSlideMenu,
+    .menus-hidden #topRightMenuWrap{
+      opacity:0; transform: translateY(10px) scale(.98); visibility:hidden;
+    }
+
+    /* === Top-right Dropdown Menu === */
+    #topRightMenuWrap{
+      position: fixed; top: 10px; right: 10px; z-index: 100000;
+      transition: opacity .35s ease, transform .35s ease, visibility .35s ease;
+    }
+    #menuButton{
+      appearance: none; border: 0; cursor: pointer;
+      background: #111; color: #0ff; padding: 10px 14px; border-radius: 10px;
+      font-weight: 700; box-shadow: 0 0 10px rgba(0,255,255,.35);
+    }
+    #dropdown{
+      position: absolute; right: 0; top: 44px; min-width: 260px;
+      background: #0b0b0b; color: #eaffff; border-radius: 12px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.4); padding: 8px; display: none;
+    }
+    #dropdown button{
+      width: 100%; text-align: left; background: transparent; color: inherit;
+      border: 0; padding: 10px 12px; border-radius: 8px; cursor: pointer;
+    }
+    #dropdown button:hover{ background: rgba(0,255,255,.08); }
+    #dropdown small{ display:block; opacity:.7; font-size: 11px; line-height: 1.3; }
+    #dropdown .opt-title{ font-weight: 800; margin-bottom: 2px; }
+    #restoreHint{
+      display:none; position: fixed; top: 12px; right: 12px; z-index: 100000;
+      background: #111; color: #fff; padding: 8px 12px; border-radius: 10px; font-size: 12px;
+      box-shadow: 0 0 10px rgba(255,255,255,.2);
+    }
+  </style>
+
+  <!-- Static Menu -->
+
+
+
+  <!-- (Fullscreen button REMOVED as requested) -->
+
+  <!-- Your original Unity DOM -->
+  <div id="unity-container" class="unity-desktop">
+      <canvas id="unity-canvas" tabindex="-1" style="cursor: default;" width="2560" height="1279"></canvas>
+  </div>
+  <div id="loading-cover" style="background: url('background.png') center center / cover; display: none;">
+      <div id="unity-loading-bar">
+          <div id="unity-progress-bar-empty" style="">
+              <div id="unity-progress-bar-full" style="width: 100%;"></div>
+          </div>
+          <div class="spinner" style="display: none;"></div>
+      </div>
+  </div>
+
+
+  <!-- Your original boot script (unchanged) -->
+  <script>
+    const hideFullScreenButton = "";
+    const buildUrl = "https://cdn.jsdelivr.net/gh/centerclassroom/mc55@main/Build";
+    const loaderUrl = buildUrl + "/bb0d9ecdb05db3e84da20bd14a4f84dc.loader.js";
+    const config = {
+        dataUrl: buildUrl + "/cffd2fddc93a5e3bb5ff56ac3bb5a297.data.br",
+        frameworkUrl: buildUrl + "/c39bf58f300a834e953a20c745c5e5f2.framework.js",
+        codeUrl: buildUrl + "/d649f30ffe591eef6765ee27d7fc980f.wasm.br",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "DefaultCompany",
+        productName: "GtaArcade",
+        productVersion: "0.1"
+    };
+
+    const container = document.querySelector("#unity-container");
+    const canvas = document.querySelector("#unity-canvas");
+    const loadingCover = document.querySelector("#loading-cover");
+    const progressBarEmpty = document.querySelector("#unity-progress-bar-empty");
+    const progressBarFull = document.querySelector("#unity-progress-bar-full");
+    const spinner = document.querySelector('.spinner');
+
+    const canFullscreen = (function () {
+        for (const key of [
+            'exitFullscreen','webkitExitFullscreen','webkitCancelFullScreen','mozCancelFullScreen','msExitFullscreen',
+        ]) { if (key in document) return true; }
+        return false;
+    }());
+
+    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        container.className = "unity-mobile";
+    }
+
+    loadingCover.style.background = "url('background.png') center / cover";
+    loadingCover.style.display = "";
+
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
+    function FocusGame() { window.focus(); canvas.focus(); }
+    window.addEventListener('pointerdown', FocusGame);
+    window.addEventListener('touchstart', FocusGame);
+
+    let StartUnityInstance;
+    let myGameInstance;
+    let ysdk = null; // unchanged
+
+    let environmentData = {
+        language: "en",
+        domain: "default_domain",
+        deviceType: "desktop",
+        isMobile: false,
+        isDesktop: true,
+        isTablet: false,
+        isTV: false,
+        appID: "default_app_id",
+        browserLang: navigator.language || "en",
+        payload: null,
+        promptCanShow: false,
+        reviewCanShow: false,
+        platform: navigator.platform,
+        browser: (function() {
+            let u = navigator.userAgent;
+            if (u.includes("YaBrowser")) return "Yandex";
+            if (u.includes("OPR") || u.includes("Opera")) return "Opera";
+            if (u.includes("Firefox")) return "Firefox";
+            if (u.includes("MSIE") || u.includes("Trident")) return "IE";
+            if (u.includes("Edge")) return "Edge";
+            if (u.includes("Chrome")) return "Chrome";
+            if (u.includes("Safari")) return "Safari";
+            return "Other";
+        })()
+    };
+
+    let cloudSaves = 'noData';
+    let paymentsData = 'none';
+    let playerData = 'noData';
+    let player = null;
+    let payments = null;
+    let initGame = false;
+    let nowFullAdOpen = false;
+
+    function GetPayments() { console.warn("GetPayments is not implemented"); return Promise.resolve("none"); }
+    function SaveCloud() { console.warn("SaveCloud is not implemented"); }
+    function LoadCloud() { console.warn("LoadCloud is not implemented"); return Promise.resolve("noData"); }
+    function InitPlayer() { console.warn("InitPlayer is not implemented"); return Promise.resolve("noData"); }
+
+    function FullAdShow() {
+        try {
+            if (!nowFullAdOpen) {
+                nowFullAdOpen = true;
+                if (initGame) {
+                    myGameInstance.SendMessage("YandexGame", "OpenFullAd");
+                }
+                setTimeout(() => {
+                    nowFullAdOpen = false;
+                    if (initGame) {
+                        myGameInstance.SendMessage("YandexGame", "CloseFullAd", "true");
+                    }
+                    FocusGame();
+                }, 500);
+            }
+        } catch (error) {}
+    }
+
+    function RewardedShow(rewardId) {
+        try {
+            myGameInstance.SendMessage("YandexGame", "RewardVideo", rewardId);
+            function closeRewardedAd() {
+                myGameInstance.SendMessage("YandexGame", "CloseRewardVideo");
+                FocusGame();
+            }
+            closeRewardedAd();
+        } catch (error) {}
+    }
+
+    function StickyAdActivity() { console.warn("StickyAdActivity is not implemented"); }
+    function Review() { console.warn("Review is not implemented"); }
+    function PromptShow() { console.warn("PromptShow is not implemented"); }
+    function InitLeaderboards() { console.warn("InitLeaderboards is not implemented"); }
+    function GetLeaderboardScores() { console.warn("GetLeaderboardScores is not implemented"); }
+    function SetLeaderboardScores() { console.warn("SetLeaderboardScores is not implemented"); }
+    function ConsumePurchase() { console.warn("ConsumePurchase is not implemented"); }
+    function flasgsData() { console.warn("ConsumePurchases is not implemented"); }
+
+    // File merge helpers (kept)
+    async function mergeFileParts(fileUrl, partCount) {
+        try {
             const parts = [];
             for (let i = 0; i < partCount; i++) {
-                const response = await fetch(`${fileUrl}.part${i}`);
-                parts.push(await response.arrayBuffer());
+                const partUrl = `${fileUrl}.part${i}`;
+                const response = await fetch(partUrl);
+                if (!response.ok) {
+                  throw new Error(`Failed to fetch part ${partUrl}: ${response.statusText}`);
+                }
+                const part = await response.arrayBuffer();
+                parts.push(part);
             }
             const totalSize = parts.reduce((sum, part) => sum + part.byteLength, 0);
             const merged = new Uint8Array(totalSize);
@@ -88,30 +268,83 @@
                 merged.set(new Uint8Array(part), offset);
                 offset += part.byteLength;
             }
-            return URL.createObjectURL(new Blob([merged], { type: 'application/octet-stream' }));
+            const blob = new Blob([merged], { type: 'application/octet-stream' });
+            return URL.createObjectURL(blob);
+        } catch (error) {
+            console.error(`Error merging file ${fileUrl}:`, error);
+            throw error;
         }
+    }
 
-        // Initialize Unity
+    async function prepareUnityConfig(cfg) {
+        try {
+            // Restore your original split-file behavior
+            const dataPartsCount = 4;
+            cfg.dataUrl = await mergeFileParts(buildUrl + "/cffd2fddc93a5e3bb5ff56ac3bb5a297.data.br", dataPartsCount);
+            const wasmPartsCount = 4;
+            cfg.codeUrl = await mergeFileParts(buildUrl + "/d649f30ffe591eef6765ee27d7fc980f.wasm.br", wasmPartsCount);
+            return cfg;
+        } catch (error) {
+            console.error("Error preparing Unity config:", error);
+            throw error;
+        }
+    }
+
+    // *** IMPORTANT ***: Keep your dynamic loader EXACTLY as before
+    try {
         const script = document.createElement("script");
         script.src = loaderUrl;
         script.onload = async () => {
             try {
-                config.dataUrl = await mergeFileParts(config.dataUrl, 4);
-                config.codeUrl = await mergeFileParts(config.codeUrl, 4);
-                
-                createUnityInstance(canvas, config, (progress) => {
-                    progressBarFull.style.width = `${100 * progress}%`;
-                }).then((unityInstance) => {
-                    loadingCover.style.display = "none";
-                });
-            } catch (err) {
-                console.error("Unity Load Error:", err);
+                const updatedConfig = await prepareUnityConfig({ ...config });
+
+                StartUnityInstance = function () {
+                    createUnityInstance(canvas, updatedConfig, (progress) => {
+                        spinner.style.display = "none";
+                        progressBarEmpty.style.display = "";
+                        progressBarFull.style.width = `${100 * progress}%`;
+                    }).then((unityInstance) => {
+                        myGameInstance = unityInstance;
+                        loadingCover.style.display = "none";
+                        initGame = true; // restore flag so ads callbacks behave
+                    }).catch((message) => {
+                        console.error("Unity yükleme hatası:", message);
+                    });
+                };
+                StartUnityInstance();
+            } catch (error) {
+                console.error("Unity başlatma sırasında hata:", error);
             }
         };
         document.body.appendChild(script);
+    } catch (error) {
+        console.error("Başlatma sırasında hata:", error);
+    }
 
-        // Auto-focus game
-        window.addEventListener('pointerdown', () => canvas.focus());
-    </script>
-</body>
-</html>
+    function InitGame() {
+        try {
+            console.log('Init Game Success');
+            initGame = true;
+            if (nowFullAdOpen === true && myGameInstance != null) {
+                myGameInstance.SendMessage('YandexGame', 'OpenFullAd');
+            }
+        } catch (error) {
+            console.error("InitGame sırasında hata:", error);
+        }
+    }
+
+    window.addEventListener("unhandledrejection", function(event) {
+        console.warn("Hata es geçildi:", event.reason);
+        event.preventDefault();
+    });
+
+    /* (Fullscreen/new-tab helper REMOVED as requested) */
+  </script>
+
+  <!-- Keep your original external loader includes (as you had them) -->
+  <script src="https://cdn.jsdelivr.net/gh/centerclassroom/mc55@main/Build/bb0d9ecdb05db3e84da20bd14a4f84dc.loader.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/centerclassroom/mc55@main/Build/c39bf58f300a834e953a20c745c5e5f2.framework.js"></script>
+
+]]></content>
+</moduleprefs></module>
+</body></html>
